@@ -1,0 +1,41 @@
+name: Manual deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Where to deploy
+        type: choice
+        options: [staging, production]
+        default: staging
+      dry_run:
+        description: Print the steps without deploying
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        env:
+          TARGET: ${{ inputs.environment }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run: would deploy $GITHUB_SHA to $TARGET"
+          else
+            echo "Deploying $GITHUB_SHA to $TARGET"
+            # ./scripts/deploy.sh "$TARGET"
+          fi
+      - name: Summary
+        run: echo "Deployed ${GITHUB_SHA::7} to ${{ inputs.environment }}" >> "$GITHUB_STEP_SUMMARY"

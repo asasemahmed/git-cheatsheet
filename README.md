@@ -1,6 +1,11 @@
 # git-cheatsheet
 
-A short list of the git and GitHub CLI commands I use most.
+A short list of the git and GitHub CLI commands I use most, plus a full guide to GitHub Actions.
+
+## Guides
+
+- [GitHub Actions: the complete guide](docs/github-actions.md) covers events, jobs, steps, expressions, secrets, matrices, caching, reusable workflows, custom actions, runners, security and debugging, with diagrams.
+- [Example workflows](examples) for CI, releases, manual deploys and housekeeping.
 
 ## Everyday git
 
